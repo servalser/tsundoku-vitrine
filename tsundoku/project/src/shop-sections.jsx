@@ -291,62 +291,132 @@ function QuizzTeaser({ shop, theme, onNav }) {
   );
 }
 
-// ── Feed Instagram ────────────────────────────────────────────────────────────
+// ── Bloc Instagram ────────────────────────────────────────────────────────────
 function InstaFeed({ shop, theme }) {
-  const S       = TSUNDOKU[shop];
-  const dark    = theme === 'dark';
-  const bp      = useBreakpoint();
-  const cardBorder = dark ? 'rgba(255,255,255,.1)' : 'rgba(0,0,0,.1)';
+  const S    = TSUNDOKU[shop];
+  const dark = theme === 'dark';
+  const bp   = useBreakpoint();
+  const ink  = dark ? '#fff'  : '#111';
+  const muted = dark ? 'rgba(255,255,255,.6)' : 'rgba(0,0,0,.55)';
+  const cardBg = dark ? '#14141c' : '#fff';
+  const border = dark ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.08)';
 
-  const posts = [
-    { caption: 'Arrivage du tome 108 de One Piece 🏴‍☠️', likes: 342, kanji: '海' },
-    { caption: 'Rencontre avec le mangaka ce samedi',      likes: 891, kanji: '会' },
-    { caption: "Nouveau coin lecture installe a l'etage",  likes: 221, kanji: '本' },
-    { caption: 'Les goodies Chainsaw Man sont la',          likes: 567, kanji: '鋸' },
-    { caption: 'Soiree projection · Akira 4K',             likes: 412, kanji: '光' },
-    { caption: 'Yuki a fini de reclasser tout le rayon seinen', likes: 129, kanji: '棚' },
-  ];
+  const handle = shop === 'toulon' ? 'tsundoku_toulon' : 'tsundoku_marseille';
+  const url    = S.instagram || `https://www.instagram.com/${handle}/`;
 
-  // Grille : 2 cols mobile → 4 cols tablette → 6 cols desktop
-  const cols = bp.isMobile ? 'repeat(2, 1fr)' : bp.isTablet ? 'repeat(4, 1fr)' : 'repeat(6, 1fr)';
+  const sectionPad = bp.isMobile ? '60px 20px' : bp.isTablet ? '70px 40px' : '90px 60px';
 
   return (
-    <Section
-      label={`@tsundoku_${shop} · Instagram`}
-      title="Les derniers posts."
-      dark={dark} shop={shop} cta="Tout voir"
-    >
-      <div style={{ display: 'grid', gridTemplateColumns: cols, gap: bp.isMobile ? 8 : 14 }}>
-        {/* Sur mobile : afficher seulement 4 posts pour ne pas surcharger */}
-        {posts.slice(0, bp.isMobile ? 4 : 6).map((p, i) => (
-          <div key={i} style={{
-            aspectRatio: '1', border: `1px solid ${cardBorder}`,
-            background: i % 2 === 0 ? S.bg : S.bgDeep,
-            position: 'relative', overflow: 'hidden', cursor: 'pointer',
-            transition: 'transform .25s',
+    <section style={{ padding: sectionPad, color: ink, position: 'relative' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto' }}>
+
+        {/* En-tete */}
+        <div style={{ marginBottom: bp.isMobile ? 28 : 40 }}>
+          <div style={{
+            fontSize: 11, letterSpacing: 4, color: S.accent,
+            textTransform: 'uppercase', fontWeight: 700, marginBottom: 10,
+            display: 'flex', alignItems: 'center', gap: 10,
+          }}>
+            <span style={{ width: 24, height: 1, background: S.accent }} />
+            @{handle} · Instagram
+          </div>
+          <h2 style={{
+            fontFamily: FONTS.display,
+            fontSize: bp.isMobile ? 36 : bp.isTablet ? 48 : 60,
+            lineHeight: .95, margin: 0, letterSpacing: -1,
+          }}>Suivez-nous.</h2>
+        </div>
+
+        {/* Bloc visuel */}
+        <a href={url} target="_blank" rel="noopener noreferrer" style={{
+          display: 'block', textDecoration: 'none', color: 'inherit',
+        }}>
+          <div style={{
+            background: cardBg, border: `1px solid ${border}`,
+            borderRadius: bp.isMobile ? 8 : 0,
+            padding: bp.isMobile ? '40px 24px' : '60px 60px',
+            position: 'relative', overflow: 'hidden',
+            cursor: 'pointer', transition: 'transform .25s',
           }}
             onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
             onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
           >
-            <div style={{ position: 'absolute', inset: 0, color: S.accent, opacity: .25, ...HALFTONE_SMALL }} />
+            {/* Motif halftone */}
             <div style={{
-              position: 'absolute', right: -20, top: -20,
-              fontFamily: FONTS.jpDisplay, fontWeight: 900,
-              fontSize: bp.isMobile ? 100 : 180,
-              color: S.accent, opacity: .25, lineHeight: .9,
-            }}>{p.kanji}</div>
-            <div style={{ position: 'absolute', left: 10, bottom: 10, right: 10, color: '#fff' }}>
-              <div style={{ fontSize: bp.isMobile ? 9 : 11, lineHeight: 1.3, textShadow: '0 1px 3px rgba(0,0,0,.8)', marginBottom: 4 }}>
-                {p.caption}
+              position: 'absolute', inset: 0, color: S.accent, opacity: .06,
+              ...HALFTONE_MED, pointerEvents: 'none',
+            }} />
+
+            {/* Kanji decoratif */}
+            {!bp.isMobile && (
+              <div style={{
+                position: 'absolute', right: -20, top: -40,
+                fontFamily: FONTS.jpDisplay, fontWeight: 900, fontSize: 320,
+                color: S.accent, opacity: .08, lineHeight: 1, pointerEvents: 'none',
+              }}>写</div>
+            )}
+
+            <div style={{
+              position: 'relative',
+              display: 'flex',
+              flexDirection: bp.isMobile ? 'column' : 'row',
+              alignItems: 'center', gap: bp.isMobile ? 24 : 48,
+            }}>
+              {/* Icone Instagram stylisee */}
+              <div style={{
+                width: bp.isMobile ? 80 : 110, height: bp.isMobile ? 80 : 110,
+                borderRadius: 24, flexShrink: 0,
+                background: `linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 8px 32px rgba(225,48,108,.3)',
+              }}>
+                {/* Camera icon simplifie */}
+                <div style={{
+                  width: bp.isMobile ? 44 : 60, height: bp.isMobile ? 44 : 60,
+                  borderRadius: 14, border: '3px solid #fff',
+                  position: 'relative',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <div style={{
+                    width: bp.isMobile ? 18 : 24, height: bp.isMobile ? 18 : 24,
+                    borderRadius: '50%', border: '3px solid #fff',
+                  }} />
+                  <div style={{
+                    position: 'absolute', top: bp.isMobile ? 6 : 8, right: bp.isMobile ? 6 : 8,
+                    width: 6, height: 6, borderRadius: '50%', background: '#fff',
+                  }} />
+                </div>
               </div>
-              <div style={{ fontSize: 10, opacity: .8, display: 'flex', alignItems: 'center', gap: 4 }}>
-                ♥ {p.likes}
+
+              {/* Texte */}
+              <div>
+                <div style={{
+                  fontFamily: FONTS.display,
+                  fontSize: bp.isMobile ? 26 : 38,
+                  lineHeight: 1, letterSpacing: -1, color: ink,
+                  marginBottom: 10,
+                }}>@{handle}</div>
+                <div style={{
+                  fontSize: bp.isMobile ? 14 : 16, lineHeight: 1.6, color: muted,
+                  maxWidth: 420, marginBottom: 20,
+                }}>
+                  Nouveautes, coulisses et evenements — tout se passe la-bas.
+                </div>
+                <div style={{
+                  display: 'inline-block',
+                  background: S.accent, color: S.bgDeep,
+                  padding: bp.isMobile ? '12px 20px' : '14px 26px',
+                  fontWeight: 700, fontSize: bp.isMobile ? 12 : 14,
+                  letterSpacing: 3, textTransform: 'uppercase',
+                  borderRadius: 99, fontFamily: FONTS.body,
+                  boxShadow: `0 0 0 4px ${S.accent}44`,
+                }}>Voir sur Instagram →</div>
               </div>
             </div>
           </div>
-        ))}
+        </a>
       </div>
-    </Section>
+    </section>
   );
 }
 
