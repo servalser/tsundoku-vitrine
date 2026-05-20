@@ -19,45 +19,129 @@
 <body>
 <div id="root"></div>
 
-<!-- React 18 + ReactDOM (sans build, via CDN) -->
+<!-- React 18 + ReactDOM -->
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
-<!-- Babel Standalone : compile le JSX dans le navigateur -->
+<!-- Babel Standalone -->
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 
 <!-- Tokens de design -->
-<script type="text/babel" src="tsundoku/project/src/tokens.jsx?v=1"></script>
+<script type="text/babel" src="tsundoku/project/src/tokens.jsx?v=2"></script>
 
 <!-- Split-screen d'entree -->
-<script type="text/babel" src="tsundoku/project/src/split-a.jsx?v=1"></script>
-
-<!-- page-catalog expose RESA_LIMIT dont shop-sections a besoin -->
-<script type="text/babel" src="tsundoku/project/src/page-catalog.jsx?v=1"></script>
+<script type="text/babel" src="tsundoku/project/src/split-a.jsx?v=2"></script>
 
 <!-- Navbar + hero + sections page d'accueil -->
-<script type="text/babel" src="tsundoku/project/src/shop-nav.jsx?v=1"></script>
-<script type="text/babel" src="tsundoku/project/src/shop-sections.jsx?v=1"></script>
+<script type="text/babel" src="tsundoku/project/src/shop-nav.jsx?v=2"></script>
+<script type="text/babel" src="tsundoku/project/src/shop-sections.jsx?v=2"></script>
 
 <!-- Pages du site -->
-<script type="text/babel" src="tsundoku/project/src/page-manga.jsx?v=1"></script>
-<script type="text/babel" src="tsundoku/project/src/page-event.jsx?v=1"></script>
-<script type="text/babel" src="tsundoku/project/src/page-about.jsx?v=1"></script>
-<script type="text/babel" src="tsundoku/project/src/page-contact.jsx?v=1"></script>
+<script type="text/babel" src="tsundoku/project/src/page-event.jsx?v=2"></script>
+<script type="text/babel" src="tsundoku/project/src/page-about.jsx?v=2"></script>
+<script type="text/babel" src="tsundoku/project/src/page-contact.jsx?v=2"></script>
 
 <script type="text/babel">
 
 /* ═══════════════════════════════════════════════════════════════
-   Site — version vitrine (pas d'auth, pas d'admin, pas de quizz)
+   ComingSoonPage — page "en developpement"
+   Affichee quand on clique sur Catalogue, Quizz, Compte, Reservations
+   ═══════════════════════════════════════════════════════════════ */
+function ComingSoonPage({ shop, theme, onBack, onToggleTheme, onShopSwitch, onNav, label }) {
+  const S    = TSUNDOKU[shop];
+  const dark = theme === 'dark';
+  const bg   = dark ? '#0a0a12' : '#f7f5ef';
+  const ink  = dark ? '#fff'    : '#111';
+  const muted = dark ? 'rgba(255,255,255,.5)' : 'rgba(0,0,0,.5)';
+  const bp   = useBreakpoint();
+
+  return (
+    <div style={{ width: '100%', background: bg, color: ink, fontFamily: FONTS.body, minHeight: '100vh' }}>
+      <Navbar
+        shop={shop} theme={theme} connected={false}
+        active={label} onNav={onNav}
+        onConnect={() => onNav('client')} onBack={onBack}
+        onToggleTheme={onToggleTheme} onShopSwitch={onShopSwitch}
+      />
+
+      {/* Bloc principal */}
+      <div style={{
+        position: 'relative', overflow: 'hidden',
+        padding: bp.isMobile ? '80px 20px 100px' : '120px 60px 160px',
+        background: S.bg, borderBottom: `4px solid ${S.accent}`,
+      }}>
+        {/* Motif halftone */}
+        <div style={{
+          position: 'absolute', inset: 0, color: S.accent, opacity: .08,
+          ...HALFTONE_MED, pointerEvents: 'none',
+        }} />
+
+        {/* Kanji decoratif de fond */}
+        {!bp.isMobile && (
+          <div style={{
+            position: 'absolute', right: -40, top: -60,
+            fontFamily: FONTS.jpDisplay, fontWeight: 900,
+            fontSize: bp.isTablet ? 300 : 500,
+            color: S.accent, opacity: .12, lineHeight: .82,
+            pointerEvents: 'none',
+          }}>工</div>
+        )}
+
+        <div style={{
+          maxWidth: 700, margin: '0 auto', position: 'relative',
+          textAlign: 'center',
+        }}>
+          {/* Kanji visible */}
+          <div style={{
+            fontFamily: FONTS.jpDisplay, fontWeight: 900,
+            fontSize: bp.isMobile ? 72 : 100,
+            color: S.accent, opacity: .5, marginBottom: 20,
+          }}>工</div>
+
+          {/* Titre — sans accents car FONTS.display = Crispy Tofu */}
+          <h1 style={{
+            fontFamily: FONTS.display,
+            fontSize: bp.isMobile ? 42 : bp.isTablet ? 60 : 80,
+            lineHeight: .9, margin: 0, letterSpacing: -3,
+            color: '#fff',
+            textShadow: `4px 4px 0 ${S.bgDeep}`,
+          }}>
+            Bientot<br />
+            <span style={{ color: S.accent }}>disponible.</span>
+          </h1>
+
+          {/* Sous-texte */}
+          <div style={{
+            marginTop: 24, fontSize: bp.isMobile ? 15 : 17,
+            lineHeight: 1.6, color: 'rgba(255,255,255,.7)',
+            maxWidth: 440, margin: '24px auto 0',
+          }}>
+            Cette section est en cours de developpement.
+            Revenez bientot ou passez en boutique pour en profiter directement.
+          </div>
+
+          {/* Bouton retour */}
+          <button onClick={() => onNav('shop')} style={{
+            marginTop: 40,
+            background: S.accent, color: S.bgDeep, border: 'none',
+            padding: bp.isMobile ? '14px 24px' : '16px 32px',
+            fontWeight: 700, fontSize: bp.isMobile ? 12 : 14,
+            letterSpacing: 3, textTransform: 'uppercase',
+            borderRadius: 99, cursor: 'pointer', fontFamily: FONTS.body,
+            boxShadow: `0 0 0 4px ${S.accent}44`,
+          }}>Retour a l'accueil →</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Site — version vitrine
    ═══════════════════════════════════════════════════════════════ */
 function Site({ shop, onShopChange, theme, onThemeToggle }) {
-  const [view, setView]       = React.useState('choice');
-  const [mangaId, setMangaId] = React.useState('cs');
+  const [view, setView] = React.useState('choice');
 
-  /* nav(vue, payload?) — change de page et remet le scroll a zero */
-  const nav = (v, payload) => {
-    if (v === 'manga' && payload) setMangaId(payload);
-    // Redirige les liens quizz/client vers la page d'accueil
-    if (v === 'quizz' || v === 'client') v = 'shop';
+  const nav = (v) => {
     setView(v);
     requestAnimationFrame(() => {
       const el = document.querySelector('[data-page-scroll]');
@@ -65,12 +149,11 @@ function Site({ shop, onShopChange, theme, onThemeToggle }) {
     });
   };
 
-  /* Props communs a toutes les pages */
   const pageProps = {
     shop, theme,
     connected: false,
     client: null,
-    onConnect:      () => {},  // pas de connexion en mode vitrine
+    onConnect:      () => nav('client'),
     onBack:         () => nav('choice'),
     onToggleTheme:  onThemeToggle,
     onShopSwitch:   (s) => { onShopChange(s); },
@@ -80,7 +163,7 @@ function Site({ shop, onShopChange, theme, onThemeToggle }) {
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
 
-      {/* ── Split-screen de choix de boutique ── */}
+      {/* ── Split-screen ── */}
       {view === 'choice' && (
         <div
           style={{ width: '100%', height: '100%' }}
@@ -96,18 +179,21 @@ function Site({ shop, onShopChange, theme, onThemeToggle }) {
         </div>
       )}
 
-      {/* ── Pages interieures ── */}
+      {/* ── Pages ── */}
       {view !== 'choice' && (
         <div
           data-page-scroll
           style={{ width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden' }}
         >
-          {view === 'shop'    && <ShopHomepage    {...pageProps} intensity={1} />}
-          {view === 'catalog' && <CatalogPage     {...pageProps} onOpenManga={(id) => nav('manga', id)} />}
-          {view === 'manga'   && <MangaDetailPage {...pageProps} mangaId={mangaId} />}
-          {view === 'event'   && <EventPage       {...pageProps} />}
-          {view === 'about'   && <AboutPage       {...pageProps} />}
-          {view === 'contact' && <ContactPage     {...pageProps} />}
+          {view === 'shop'    && <ShopHomepage {...pageProps} intensity={1} />}
+          {view === 'event'   && <EventPage    {...pageProps} />}
+          {view === 'about'   && <AboutPage    {...pageProps} />}
+          {view === 'contact' && <ContactPage  {...pageProps} />}
+
+          {/* Pages "en developpement" */}
+          {view === 'catalog' && <ComingSoonPage {...pageProps} label="Catalogue" />}
+          {view === 'quizz'   && <ComingSoonPage {...pageProps} label="Quizz" />}
+          {view === 'client'  && <ComingSoonPage {...pageProps} label="Compte" />}
         </div>
       )}
     </div>
@@ -115,7 +201,7 @@ function Site({ shop, onShopChange, theme, onThemeToggle }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   App — niveau racine
+   App
    ═══════════════════════════════════════════════════════════════ */
 function App() {
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -135,21 +221,18 @@ function App() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   Boot — attend que tous les composants soient charges
+   Boot
    ═══════════════════════════════════════════════════════════════ */
 function boot() {
   const ready =
     window.useBreakpoint   &&
     window.SplitScreenA    &&
     window.ShopHomepage    &&
-    window.CatalogPage     &&
-    window.MangaDetailPage &&
     window.EventPage       &&
     window.AboutPage       &&
     window.ContactPage;
 
   if (!ready) return setTimeout(boot, 80);
-
   ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 }
 boot();

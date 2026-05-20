@@ -609,8 +609,6 @@ function ShopHomepage({
         onToggleTheme={onToggleTheme} onShopSwitch={onShopSwitch}
       />
       <HeroGallery shop={shop} theme={theme} intensity={intensity} onNav={onNav} />
-      <ResaHighlight shop={shop} theme={theme} onNav={onNav} />
-      <QuizzTeaser shop={shop} theme={theme} onNav={onNav} />
       <InstaFeed shop={shop} theme={theme} />
       <Events shop={shop} theme={theme} onNav={onNav} />
       <Reviews shop={shop} theme={theme} />

@@ -21,7 +21,7 @@ function Navbar({ shop, theme, connected, client, onConnect, onBack, onToggleThe
     if (bp.isDesktop) setMenuOpen(false);
   }, [bp.isDesktop]);
 
-  const pages = ['Accueil', 'Catalogue', 'A propos', 'Contact'];
+  const pages = ['Accueil', 'Catalogue', 'Quizz', 'Compte', 'A propos', 'Contact'];
 
   // Prénom affiché quand le client est connecté (avec un fallback)
   const prenomAffiche = client?.prenom || 'Mon compte';
@@ -30,6 +30,8 @@ function Navbar({ shop, theme, connected, client, onConnect, onBack, onToggleThe
   const pageTarget = (p) =>
     p === 'Accueil'       ? 'shop'
     : p === 'Catalogue'     ? 'catalog'
+    : p === 'Quizz'         ? 'quizz'
+    : p === 'Compte'        ? 'client'
     : p === 'A propos'      ? 'about'
     : p === 'Contact'       ? 'contact'
     : null;
@@ -398,23 +400,14 @@ function HeroGallery({ shop, theme, intensity, onNav }) {
           // Limiter la largeur des boutons en colonne sur mobile
           maxWidth: bp.isMobile ? 280 : 'none',
         }}>
-          <button onClick={() => onNav && onNav('catalog')} style={{
+          <button onClick={() => onNav && onNav('about')} style={{
             background: S.accent, color: S.bgDeep, border: 'none',
             padding: bp.isMobile ? '14px 20px' : '16px 26px',
             fontWeight: 700, fontSize: bp.isMobile ? 12 : 14,
             letterSpacing: 3, textTransform: 'uppercase',
             borderRadius: 99, cursor: 'pointer', fontFamily: FONTS.body,
             boxShadow: `0 0 0 4px ${S.accent}44`,
-          }}>Reserver un manga →</button>
-          <button onClick={() => onNav && onNav('catalog')} style={{
-            background: 'rgba(255,255,255,.1)', color: '#fff',
-            border: '1px solid rgba(255,255,255,.3)',
-            backdropFilter: 'blur(8px)',
-            padding: bp.isMobile ? '14px 20px' : '16px 26px',
-            fontWeight: 700, fontSize: bp.isMobile ? 12 : 14,
-            letterSpacing: 3, textTransform: 'uppercase',
-            borderRadius: 99, cursor: 'pointer', fontFamily: FONTS.body,
-          }}>Voir les titres</button>
+          }}>Decouvrir la boutique →</button>
         </div>
       </div>
 
