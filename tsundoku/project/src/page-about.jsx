@@ -1,4 +1,4 @@
-// Page A propos — histoire, equipe, valeurs
+// Page A propos — histoire, espaces, equipe
 // Exports: AboutPage
 
 const TEAM = [
@@ -8,19 +8,31 @@ const TEAM = [
   { name: 'Fanny',   role: 'Libraire · Marseille',  kanji: '星', accent: '#8cd3a0', bio: 'Elle gere les evenements et connait chaque client par son prenom. Ambiance garantie.' },
 ];
 
-const VALEURS = [
-  { num: '01', title: 'Des humains, pas des algos', desc: 'Nos recommandations viennent de l\'equipe — des gens qui ont lu les mangas qu\'ils conseillent.' },
-  { num: '02', title: 'Le manga comme art',          desc: 'On traite chaque tome avec le meme respect qu\'un roman graphique. Parce que c\'en est un.' },
-  { num: '03', title: 'La communaute d\'abord',      desc: 'Les quizz du mercredi, les evenements, les dedicaces — tout est la pour que les clients se retrouvent.' },
-];
-
-const TIMELINE = [
-  { year: '2018', event: 'Ouverture Toulon · 30 m² rue Pierre Semard',       kanji: '開' },
-  { year: '2019', event: 'Premier evenement : dedicace Gege Akutami',         kanji: '会' },
-  { year: '2020', event: 'Creation des quizz communautaires du mercredi',     kanji: '謎' },
-  { year: '2021', event: 'Ouverture Marseille · cours Pierre Puget',          kanji: '海' },
-  { year: '2023', event: 'Passage a 12 000 volumes en stock',                 kanji: '本' },
-  { year: '2026', event: 'Lancement du service de reservation en ligne',      kanji: '予' },
+const ESPACES = [
+  {
+    num: '01',
+    title: 'La Librairie',
+    kanji: '本',
+    desc: 'Plus de 15 000 references : manga en francais et en japonais, artbooks, franco-belge, comics. Tous les genres, des grands classiques aux pepites meconnues. L\'equipe se fera un plaisir de vous conseiller.',
+  },
+  {
+    num: '02',
+    title: 'Le Lounge',
+    kanji: '道',
+    desc: 'Cachee au fond de la librairie, une ruelle tokyoite regorgeant de details. Enseignes lumineuses d\'izakaya, panneaux de quartier — l\'immersion est totale. Il reste encore beaucoup de secrets a percer.',
+  },
+  {
+    num: '03',
+    title: 'Le Temple',
+    kanji: '寺',
+    desc: 'Quelques metres en contrebas, un temple urbain construit aux dimensions traditionnelles. Tatamis, papiers de riz — on remonte quelques siecles en arriere.',
+  },
+  {
+    num: '04',
+    title: 'Figurines & Goodies',
+    kanji: '物',
+    desc: 'Une selection drastique de produits officiels de qualite. Figurines, accessoires, objets de collection — de quoi completer l\'experience manga.',
+  },
 ];
 
 function AboutPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, onToggleTheme, onConnect, connected, onNav }) {
@@ -55,14 +67,13 @@ function AboutPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, onTo
           maskImage: 'radial-gradient(circle at 75% 40%, transparent 20%, black 65%)',
           WebkitMaskImage: 'radial-gradient(circle at 75% 40%, transparent 20%, black 65%)',
         }} />
-        {/* Kanji géant de fond — masqué sur mobile */}
         {!bp.isMobile && (
           <div style={{
             position: 'absolute', right: -40, top: -80,
             fontFamily: FONTS.jpDisplay, fontWeight: 900,
             fontSize: bp.isTablet ? 300 : 560,
             color: S.accent, opacity: .15, lineHeight: .82, letterSpacing: -20,
-          }}>本</div>
+          }}>積</div>
         )}
         <div style={{ maxWidth: 1400, margin: '0 auto', position: 'relative' }}>
           <div style={{
@@ -74,99 +85,106 @@ function AboutPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, onTo
           </div>
           <h1 style={{
             fontFamily: FONTS.display,
-            fontSize: bp.isMobile ? 52 : bp.isTablet ? 72 : 100,
+            fontSize: bp.isMobile ? 48 : bp.isTablet ? 72 : 100,
             lineHeight: .88, margin: 0, letterSpacing: -4, textShadow: `5px 5px 0 ${S.bgDeep}`,
           }}>
-            L'histoire<br />
-            <span style={{ color: S.accent }}>de Tsundoku.</span>
+            Le paradis<br />
+            <span style={{ color: S.accent }}>des passionnes.</span>
           </h1>
           {!bp.isMobile && (
             <div style={{ marginTop: 22, maxWidth: 580, fontSize: 17, lineHeight: 1.6, opacity: .88 }}>
-              Tsundoku (積ん読) signifie « acheter des livres et les laisser s'empiler ».
-              On a fonde cette librairie pour que ca n'arrive plus — ou au moins,
-              pour que la pile soit belle.
+              Nee de l'esprit de trois passionnes de manga et de culture japonaise,
+              Tsundoku a pour ambition d'offrir une experience chaleureuse,
+              conviviale et un peu folle.
             </div>
           )}
         </div>
       </div>
 
-      {/* ── HISTOIRE + TIMELINE ── */}
+      {/* ── DEFINITION + INTRO ── */}
       <div style={{
         padding: bp.isMobile ? '50px 20px' : bp.isTablet ? '60px 40px' : '90px 60px',
         maxWidth: 1400, margin: '0 auto',
       }}>
-        {/* 2 cols desktop → 1 col mobile/tablet */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: bp.isDesktop ? '1fr 1fr' : '1fr',
           gap: bp.isMobile ? 40 : 80, alignItems: 'flex-start',
         }}>
+          {/* Definition */}
           <div>
             <div style={{
               fontSize: 11, letterSpacing: 4, color: S.accent, fontWeight: 700,
               marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10,
             }}>
               <span style={{ width: 24, height: 1, background: S.accent }} />
-              L'histoire · 歴史
+              Tsundoku · 積ん読
             </div>
-            <h2 style={{
-              fontFamily: FONTS.display,
-              fontSize: bp.isMobile ? 40 : bp.isTablet ? 52 : 64,
-              lineHeight: .9, margin: 0, letterSpacing: -2, color: ink,
-            }}>
-              Depuis 2018,<br />a Toulon.
-            </h2>
             <div style={{
-              marginTop: 24, fontSize: 16, lineHeight: 1.75,
-              color: dark ? 'rgba(255,255,255,.82)' : 'rgba(0,0,0,.72)',
+              background: cardBg, border: `1px solid ${border}`,
+              padding: bp.isMobile ? '28px 24px' : '36px 40px',
+              position: 'relative', overflow: 'hidden',
             }}>
-              <p style={{ margin: '0 0 16px' }}>
-                Tsundoku a ouvert ses portes en mai 2018, rue Pierre Semard a Toulon.
-                Au depart 30 m², 800 volumes et une equipe de deux personnes. Aujourd'hui :
-                deux boutiques, plus de 12 000 references, et des mercredis de sortie
-                qui attirent des files devant la porte.
-              </p>
-              <p style={{ margin: 0 }}>
-                En 2021, Nassim Belaid rejoint l'aventure pour ouvrir Tsundoku Marseille.
-                Meme ADN, meme passion — juste la Mediterranee qui change de couleur.
-              </p>
+              <div style={{
+                position: 'absolute', right: -10, top: -20,
+                fontFamily: FONTS.jpDisplay, fontWeight: 900, fontSize: 160,
+                color: S.accent, opacity: .08, lineHeight: 1, pointerEvents: 'none',
+              }}>積</div>
+              <div style={{ position: 'relative' }}>
+                <div style={{
+                  fontFamily: FONTS.display, fontSize: bp.isMobile ? 20 : 26,
+                  color: S.accent, marginBottom: 6, letterSpacing: -.5,
+                }}>Tsundoku</div>
+                <div style={{
+                  fontSize: 12, color: muted, letterSpacing: 1.5,
+                  textTransform: 'uppercase', marginBottom: 16, fontWeight: 600,
+                }}>Nom commun · japonais</div>
+                <div style={{
+                  fontSize: bp.isMobile ? 15 : 17, lineHeight: 1.7,
+                  color: dark ? 'rgba(255,255,255,.82)' : 'rgba(0,0,0,.72)',
+                  fontStyle: 'italic',
+                }}>
+                  "Syndrome consistant a acheter des livres et a les entreposer autour de soi
+                  sans toutefois jamais les lire."
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Timeline */}
-          <div style={{ position: 'relative', paddingLeft: 40 }}>
+          {/* Texte d'introduction */}
+          <div>
+            <h2 style={{
+              fontFamily: FONTS.display,
+              fontSize: bp.isMobile ? 36 : bp.isTablet ? 48 : 56,
+              lineHeight: .9, margin: '0 0 24px', letterSpacing: -2, color: ink,
+            }}>
+              Bien plus<br />
+              <span style={{ color: S.accent }}>qu'une librairie.</span>
+            </h2>
             <div style={{
-              position: 'absolute', left: 8, top: 6, bottom: 6, width: 2,
-              background: `linear-gradient(to bottom, ${S.accent}, ${S.accent}18)`,
-            }} />
-            {TIMELINE.map((item, i) => (
-              <div key={i} style={{ display: 'flex', gap: 20, marginBottom: 28, position: 'relative' }}>
-                <div style={{
-                  position: 'absolute', left: -34, top: 7,
-                  width: 12, height: 12, borderRadius: 99, background: S.accent,
-                  boxShadow: `0 0 0 4px ${S.accent}33`,
-                }} />
-                <div>
-                  <div style={{
-                    fontFamily: FONTS.display, fontSize: 24, color: S.accent,
-                    letterSpacing: -1, lineHeight: 1,
-                  }}>
-                    {item.year}
-                    <span style={{ fontFamily: FONTS.jpDisplay, fontSize: 18, marginLeft: 10, opacity: .65 }}>
-                      {item.kanji}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: 14, color: muted, marginTop: 4, lineHeight: 1.45 }}>
-                    {item.event}
-                  </div>
-                </div>
-              </div>
-            ))}
+              fontSize: 16, lineHeight: 1.75,
+              color: dark ? 'rgba(255,255,255,.82)' : 'rgba(0,0,0,.72)',
+            }}>
+              <p style={{ margin: '0 0 16px' }}>
+                Pilotee par une equipe dynamique et accueillante, Tsundoku propose
+                plus de 15 000 references de manga et de goodies sur plus de 300 m²
+                de librairie et d'espaces de rencontres.
+              </p>
+              <p style={{ margin: '0 0 16px' }}>
+                A Marseille, les dessins du talentueux Mathieu Bablet ont pris vie
+                a l'ete 2021. L'auteur de BD grenoblois a dessine les plans et
+                les concept arts de l'integralite de l'espace.
+              </p>
+              <p style={{ margin: 0 }}>
+                C'est un lieu ou l'on se sent bien, ou l'on voyage, ou l'on apprend,
+                ou l'on echange, ou l'on se retrouve entre passionnes. Tout simplement.
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* ── VALEURS ── */}
+      {/* ── LES ESPACES ── */}
       <div style={{
         background: S.bg,
         padding: bp.isMobile ? '50px 20px' : bp.isTablet ? '60px 40px' : '80px 60px',
@@ -179,37 +197,45 @@ function AboutPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, onTo
             marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10,
           }}>
             <span style={{ width: 24, height: 1, background: S.accent }} />
-            Nos valeurs · 価値観
+            Les espaces · 空間
           </div>
           <h2 style={{
             fontFamily: FONTS.display,
             fontSize: bp.isMobile ? 40 : bp.isTablet ? 56 : 72,
             lineHeight: .9, margin: '0 0 36px', letterSpacing: -2, color: '#fff',
           }}>
-            Ce qui nous<br />
-            <span style={{ color: S.accent }}>anime.</span>
+            Little Tokyo<br />
+            <span style={{ color: S.accent }}>a Marseille.</span>
           </h2>
-          {/* 1 col mobile → 2 col tablette → 3 col desktop */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: bp.isMobile ? '1fr' : bp.isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
-            gap: bp.isMobile ? 14 : 24,
+            gridTemplateColumns: bp.isMobile ? '1fr' : bp.isTablet ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+            gap: bp.isMobile ? 14 : 20,
           }}>
-            {VALEURS.map((v, i) => (
+            {ESPACES.map((esp, i) => (
               <div key={i} style={{
                 background: 'rgba(0,0,0,.25)', border: `1px solid ${S.accent}33`,
-                padding: '30px 28px',
+                padding: bp.isMobile ? '24px 22px' : '30px 28px',
+                position: 'relative', overflow: 'hidden',
               }}>
+                {/* Kanji decoratif */}
                 <div style={{
-                  fontFamily: FONTS.display, fontSize: 56, color: S.accent,
-                  lineHeight: 1, letterSpacing: -2, marginBottom: 16, opacity: .7,
-                }}>{v.num}</div>
-                <div style={{
-                  fontFamily: FONTS.display, fontSize: 28, color: '#fff',
-                  letterSpacing: -.5, marginBottom: 12, lineHeight: 1.1,
-                }}>{v.title}</div>
-                <div style={{ fontSize: 14, color: 'rgba(255,255,255,.7)', lineHeight: 1.6 }}>
-                  {v.desc}
+                  position: 'absolute', right: -8, bottom: -16,
+                  fontFamily: FONTS.jpDisplay, fontWeight: 900, fontSize: 100,
+                  color: S.accent, opacity: .1, lineHeight: 1, pointerEvents: 'none',
+                }}>{esp.kanji}</div>
+                <div style={{ position: 'relative' }}>
+                  <div style={{
+                    fontFamily: FONTS.display, fontSize: 48, color: S.accent,
+                    lineHeight: 1, letterSpacing: -2, marginBottom: 14, opacity: .7,
+                  }}>{esp.num}</div>
+                  <div style={{
+                    fontFamily: FONTS.display, fontSize: bp.isMobile ? 22 : 26, color: '#fff',
+                    letterSpacing: -.5, marginBottom: 12, lineHeight: 1.1,
+                  }}>{esp.title}</div>
+                  <div style={{ fontSize: 14, color: 'rgba(255,255,255,.7)', lineHeight: 1.6 }}>
+                    {esp.desc}
+                  </div>
                 </div>
               </div>
             ))}
@@ -237,7 +263,6 @@ function AboutPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, onTo
           Ceux qui font<br />
           <span style={{ color: S.accent }}>la boutique.</span>
         </h2>
-        {/* 1 col mobile → 2 col tablette/desktop → 4 col large desktop */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: bp.isMobile ? 'repeat(2, 1fr)' : bp.isTablet ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
@@ -248,7 +273,6 @@ function AboutPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, onTo
               border: `2px solid ${border}`, background: cardBg,
               position: 'relative', overflow: 'hidden',
             }}>
-              {/* Avatar stylise BD */}
               <div style={{
                 height: 220,
                 background: `linear-gradient(135deg, ${S.bg} 0%, ${S.bgDeep} 100%)`,
@@ -280,7 +304,7 @@ function AboutPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, onTo
         </div>
       </div>
 
-      {/* ── CTA rejoindre ── */}
+      {/* ── CTA contacter ── */}
       <div style={{
         padding: bp.isMobile ? '40px 20px 60px' : '70px 60px 90px',
         maxWidth: 1400, margin: '0 auto',
