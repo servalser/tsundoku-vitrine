@@ -20,7 +20,7 @@ const TSUNDOKU = {
     ],
     googleRating: 4.9,
     googleReviews: 126,
-    googleUrl: 'https://www.google.com/maps/place/Librairie+Tsundoku+Toulon/',
+    googleUrl: 'https://www.google.com/maps/place/Librairie+Tsundoku+Toulon/@43.1227325,5.9288381,17z/data=!3m1!5s0x12c91b0de18d11f9:0xa72bb6dff33de4de!4m8!3m7!1s0x12c91bb9fa84da89:0xfc06c0c5da865352!8m2!3d43.1227286!4d5.931413!9m1!1b1!16s%2Fg%2F11vx0kjwjg?entry=ttu&g_ep=EgoyMDI2MDUxNy4wIKXMDSoASAFQAw%3D%3D',
   },
   marseille: {
     name: 'MARSEILLE',
@@ -40,7 +40,7 @@ const TSUNDOKU = {
     ],
     googleRating: 4.8,
     googleReviews: 415,
-    googleUrl: 'https://www.google.com/maps/place/Tsundoku/',
+    googleUrl: 'https://www.google.com/maps/place/Librairie+Tsundoku/@43.2899618,5.3717919,17z/data=!3m1!5s0x12c9c0b78cab0565:0x13308942e4e439e3!4m8!3m7!1s0x12c9c1e9a81a3ad5:0xcedb9cdb6a6807ff!8m2!3d43.2899579!4d5.3743668!9m1!1b1!16s%2Fg%2F11s4_f5ryg?entry=ttu&g_ep=EgoyMDI2MDUxNy4wIKXMDSoASAFQAw%3D%3D',
   },
 };
 
