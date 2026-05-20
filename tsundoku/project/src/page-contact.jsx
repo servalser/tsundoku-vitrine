@@ -331,47 +331,6 @@ function ContactPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, on
         </div>
       </div>
 
-      {/* ── FAQ ── */}
-      <div style={{
-        padding: bp.isMobile ? '0 20px 60px' : bp.isTablet ? '0 40px 80px' : '0 60px 100px',
-        maxWidth: 1400, margin: '0 auto',
-      }}>
-        <div style={{
-          fontSize: 11, letterSpacing: 4, color: S.accent, fontWeight: 700,
-          marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10,
-        }}>
-          <span style={{ width: 24, height: 1, background: S.accent }} />
-          FAQ · よくある質問
-        </div>
-        <h2 style={{
-          fontFamily: FONTS.display,
-          fontSize: bp.isMobile ? 36 : 56,
-          margin: '0 0 28px', letterSpacing: -2, color: ink,
-        }}>
-          Questions frequentes.
-        </h2>
-        {/* 1 col mobile → 2 col tablette/desktop */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: bp.isMobile ? '1fr' : '1fr 1fr',
-          gap: 14,
-        }}>
-          {FAQ_ITEMS.map((item, i) => (
-            <div key={i} style={{
-              padding: '22px 26px', border: `1px solid ${border}`, background: cardBg,
-            }}>
-              <div style={{
-                fontFamily: FONTS.display, fontSize: 20, lineHeight: 1.1,
-                color: ink, letterSpacing: -.3, marginBottom: 12,
-              }}>
-                <span style={{ color: S.accent, marginRight: 8 }}>◇</span>{item.q}
-              </div>
-              <div style={{ fontSize: 14, color: muted, lineHeight: 1.65 }}>{item.r}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       <Footer shop={shop} theme={theme} />
     </div>
   );

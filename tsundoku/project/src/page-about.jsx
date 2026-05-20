@@ -296,11 +296,10 @@ function AboutPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, onTo
             fontSize: bp.isMobile ? 34 : 56,
             letterSpacing: -2, lineHeight: .9, color: ink,
           }}>
-            Tu veux nous rejoindre ?
+            Tu veux nous contacter ?
           </div>
           <div style={{ marginTop: 14, fontSize: 15, color: muted, maxWidth: 520, lineHeight: 1.6 }}>
-            On recrute ponctuellement des libraires passionnes.
-            Depose ta candidature en boutique ou ecris-nous.
+            Une question, une idee, un partenariat — ecrivez-nous.
           </div>
         </div>
         <button onClick={() => onNav && onNav('contact')} style={{
