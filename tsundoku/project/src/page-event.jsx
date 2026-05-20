@@ -142,8 +142,8 @@ function EventPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, onTo
         </div>
       </div>
 
-      {/* ── AUTRES EVENEMENTS (liens vers le meme event pour la demo) ── */}
-      <div style={{ padding: '70px 60px', maxWidth: 1400, margin: '0 auto' }}>
+      {/* ── PROCHAINS EVENEMENTS ── */}
+      <div style={{ padding: bp.isMobile ? '50px 20px' : '70px 60px', maxWidth: 1400, margin: '0 auto' }}>
         <div style={{
           fontSize: 11, letterSpacing: 4, color: S.accent, fontWeight: 700,
           marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10,
@@ -151,43 +151,37 @@ function EventPage({ shop = 'toulon', theme = 'dark', onBack, onShopSwitch, onTo
           <span style={{ width: 24, height: 1, background: S.accent }} />
           Agenda · イベント
         </div>
-        <h2 style={{ fontFamily: FONTS.display, fontSize: 48, margin: '0 0 28px', letterSpacing: -1.5 }}>
+        <h2 style={{ fontFamily: FONTS.display, fontSize: bp.isMobile ? 36 : 48, margin: '0 0 28px', letterSpacing: -1.5 }}>
           Prochains evenements.
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-          {[
-            { day: '10', month: 'MAI', title: 'Soiree quizz — special Ghibli',    tag: 'Communaute', desc: 'Equipes de 4, lots Studio Ghibli a gagner.' },
-            { day: '17', month: 'MAI', title: 'Projection · Akira 4K remaster',   tag: 'Cine-club',  desc: 'Tarif preferentiel pour les clients Tsundoku.' },
-            { day: '24', month: 'MAI', title: 'Atelier dessin manga — debutants', tag: 'Atelier',    desc: 'Anime par Camille. 2h, materiel fourni.' },
-          ].map((e, i) => {
-            const dark2  = theme === 'dark';
-            const cardBg = dark2 ? '#14141c' : '#fff';
-            const brd    = dark2 ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.08)';
-            return (
-              <div key={i} style={{
-                display: 'flex', border: `1px solid ${brd}`, background: cardBg,
-                overflow: 'hidden', cursor: 'pointer', transition: 'transform .2s',
-              }}
-                onMouseEnter={ev => ev.currentTarget.style.transform = 'translateY(-3px)'}
-                onMouseLeave={ev => ev.currentTarget.style.transform = 'translateY(0)'}
-              >
-                <div style={{
-                  width: 90, flexShrink: 0, background: S.bg, color: S.accent,
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                  padding: '14px 8px', position: 'relative',
-                }}>
-                  <div style={{ position: 'absolute', inset: 0, color: S.accent, opacity: .15, ...HALFTONE_SMALL }} />
-                  <div style={{ fontFamily: FONTS.display, fontSize: 40, lineHeight: 1, letterSpacing: -1 }}>{e.day}</div>
-                  <div style={{ fontSize: 10, letterSpacing: 3, fontWeight: 700, marginTop: 2 }}>{e.month}</div>
-                </div>
-                <div style={{ padding: '16px 18px', flex: 1 }}>
-                  <div style={{ fontSize: 10, letterSpacing: 2, color: S.accent, fontWeight: 700, textTransform: 'uppercase', marginBottom: 6 }}>{e.tag}</div>
-                  <div style={{ fontFamily: FONTS.display, fontSize: 18, lineHeight: 1.1, color: ink, letterSpacing: -.3 }}>{e.title}</div>
-                  <div style={{ fontSize: 12, lineHeight: 1.5, color: muted, marginTop: 6 }}>{e.desc}</div>
-                </div>
-              </div>
-            );
-          })}
+
+        {/* Message "a suivre" */}
+        <div style={{
+          textAlign: 'center',
+          padding: bp.isMobile ? '48px 20px' : '64px 40px',
+          background: dark ? '#14141c' : '#fff',
+          border: `1px solid ${border}`,
+          borderRadius: 8, position: 'relative', overflow: 'hidden',
+        }}>
+          <div style={{
+            position: 'absolute', inset: 0, color: S.accent, opacity: .05,
+            ...HALFTONE_MED, pointerEvents: 'none',
+          }} />
+          <div style={{
+            fontFamily: FONTS.jpDisplay, fontWeight: 900,
+            fontSize: bp.isMobile ? 56 : 80,
+            color: S.accent, opacity: .35, marginBottom: 16, position: 'relative',
+          }}>続</div>
+          <div style={{
+            fontFamily: FONTS.display,
+            fontSize: bp.isMobile ? 24 : 36,
+            color: ink, letterSpacing: -1, position: 'relative',
+          }}>A suivre...</div>
+          <div style={{
+            fontSize: 14, color: muted, marginTop: 12, position: 'relative', lineHeight: 1.6,
+          }}>
+            Les prochains evenements seront annonces sur nos reseaux sociaux.
+          </div>
         </div>
       </div>
 

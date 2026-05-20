@@ -191,9 +191,10 @@ function Site({ shop, onShopChange, theme, onThemeToggle }) {
           {view === 'contact' && <ContactPage  {...pageProps} />}
 
           {/* Pages "en developpement" */}
-          {view === 'catalog' && <ComingSoonPage {...pageProps} label="Catalogue" />}
-          {view === 'quizz'   && <ComingSoonPage {...pageProps} label="Quizz" />}
-          {view === 'client'  && <ComingSoonPage {...pageProps} label="Compte" />}
+          {view === 'catalog'     && <ComingSoonPage {...pageProps} label="Catalogue" />}
+          {view === 'quizz'       && <ComingSoonPage {...pageProps} label="Quizz" />}
+          {view === 'client'      && <ComingSoonPage {...pageProps} label="Compte" />}
+          {view === 'calendrier'  && <ComingSoonPage {...pageProps} label="Calendrier" />}
         </div>
       )}
     </div>

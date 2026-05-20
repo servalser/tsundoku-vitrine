@@ -2,7 +2,7 @@
 // Exports: Section, QuizzTeaser, InstaFeed, Events, Reviews, Infos, Footer, ShopHomepage
 
 // Composant de section générique avec en-tête
-function Section({ label, title, dark, shop, children, cta }) {
+function Section({ label, title, dark, shop, children, cta, onCtaClick }) {
   const S     = TSUNDOKU[shop];
   const ink   = dark ? '#fff'  : '#111';
   const bp    = useBreakpoint();
@@ -40,11 +40,11 @@ function Section({ label, title, dark, shop, children, cta }) {
             }}>{title}</h2>
           </div>
           {cta && (
-            <a href="#" style={{
+            <a href="#" onClick={e => { e.preventDefault(); if (onCtaClick) onCtaClick(); }} style={{
               color: ink, textDecoration: 'none', fontSize: 12, letterSpacing: 3,
               textTransform: 'uppercase', fontWeight: 700, padding: '10px 16px',
               border: `1px solid ${dark ? 'rgba(255,255,255,.2)' : 'rgba(0,0,0,.15)'}`,
-              borderRadius: 99,
+              borderRadius: 99, cursor: 'pointer',
             }}>{cta} →</a>
           )}
         </div>
@@ -430,59 +430,34 @@ function Events({ shop, theme, onNav }) {
   const cardBg = dark ? '#14141c' : '#fff';
   const border = dark ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.08)';
 
-  const events = [
-    { day: '03', month: 'MAI', title: 'Dedicace · Tatsuki Fujimoto',        tag: 'Rencontre',  desc: 'Le mangaka de Chainsaw Man en visite surprise. Places limitees.' },
-    { day: '10', month: 'MAI', title: 'Soiree quizz — special Ghibli',      tag: 'Communaute', desc: 'Equipes de 4, lots Studio Ghibli a gagner. Inscription gratuite en boutique.' },
-    { day: '17', month: 'MAI', title: 'Projection · Akira 4K remaster',     tag: 'Cine-club',  desc: 'Au cinema Pathe voisin, tarif preferentiel pour les clients Tsundoku.' },
-    { day: '24', month: 'MAI', title: 'Atelier dessin manga — debutants',   tag: 'Atelier',    desc: 'Anime par Camille. 2h, materiel fourni, 15 places.' },
-  ];
-
-  // 1 col mobile → 2 col tablette/desktop
-  const cols = bp.isMobile ? '1fr' : 'repeat(2, 1fr)';
-
   return (
-    <Section label="Agenda · イベント" title="Prochains evenements." dark={dark} shop={shop} cta="Calendrier complet">
-      <div style={{ display: 'grid', gridTemplateColumns: cols, gap: bp.isMobile ? 10 : 14 }}>
-        {events.map((e, i) => (
-          <div key={i} onClick={() => onNav && onNav('event')} style={{
-            display: 'flex', border: `1px solid ${border}`, background: cardBg,
-            overflow: 'hidden', cursor: 'pointer', transition: 'transform .2s',
-          }}
-            onMouseEnter={ev => ev.currentTarget.style.transform = 'translateY(-3px)'}
-            onMouseLeave={ev => ev.currentTarget.style.transform = 'translateY(0)'}
-          >
-            {/* Bloc date */}
-            <div style={{
-              width: bp.isMobile ? 80 : 110, flexShrink: 0, background: S.bg, color: S.accent,
-              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-              padding: bp.isMobile ? '14px 8px' : '18px 10px', position: 'relative',
-            }}>
-              <div style={{ position: 'absolute', inset: 0, color: S.accent, opacity: .15, ...HALFTONE_SMALL }} />
-              <div style={{ fontFamily: FONTS.display, fontSize: bp.isMobile ? 38 : 52, lineHeight: 1, letterSpacing: -1 }}>
-                {e.day}
-              </div>
-              <div style={{ fontSize: 10, letterSpacing: 3, fontWeight: 700, marginTop: 4 }}>
-                {e.month}
-              </div>
-            </div>
-            {/* Contenu */}
-            <div style={{ padding: bp.isMobile ? '14px 16px' : '20px 22px', flex: 1 }}>
-              <div style={{
-                fontSize: 10, letterSpacing: 2, color: S.accent,
-                fontWeight: 700, textTransform: 'uppercase', marginBottom: 6,
-              }}>{e.tag}</div>
-              <div style={{ fontFamily: FONTS.display, fontSize: bp.isMobile ? 16 : 22, lineHeight: 1.1, color: ink, letterSpacing: -.5 }}>
-                {e.title}
-              </div>
-              {/* Description masquée sur mobile pour gagner de la place */}
-              {!bp.isMobile && (
-                <div style={{ fontSize: 13, lineHeight: 1.5, color: muted, marginTop: 8 }}>
-                  {e.desc}
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
+    <Section label="Agenda · イベント" title="Prochains evenements." dark={dark} shop={shop} cta="Calendrier complet" onCtaClick={() => onNav && onNav('calendrier')}>
+      {/* Message "a suivre" */}
+      <div style={{
+        textAlign: 'center',
+        padding: bp.isMobile ? '48px 20px' : '64px 40px',
+        background: cardBg, border: `1px solid ${border}`,
+        borderRadius: 8, position: 'relative', overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute', inset: 0, color: S.accent, opacity: .05,
+          ...HALFTONE_MED, pointerEvents: 'none',
+        }} />
+        <div style={{
+          fontFamily: FONTS.jpDisplay, fontWeight: 900,
+          fontSize: bp.isMobile ? 56 : 80,
+          color: S.accent, opacity: .35, marginBottom: 16, position: 'relative',
+        }}>続</div>
+        <div style={{
+          fontFamily: FONTS.display,
+          fontSize: bp.isMobile ? 24 : 36,
+          color: ink, letterSpacing: -1, position: 'relative',
+        }}>A suivre...</div>
+        <div style={{
+          fontSize: 14, color: muted, marginTop: 12, position: 'relative', lineHeight: 1.6,
+        }}>
+          Les prochains evenements seront annonces sur nos reseaux sociaux.
+        </div>
       </div>
     </Section>
   );
