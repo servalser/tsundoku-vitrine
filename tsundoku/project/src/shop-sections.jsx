@@ -571,16 +571,12 @@ function Infos({ shop, theme }) {
           <div style={{ fontFamily: FONTS.display, fontSize: bp.isMobile ? 22 : 28, lineHeight: 1.2, letterSpacing: -.5 }}>
             {S.address}
           </div>
-          <div style={{ marginTop: 20, display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-            <a href="#" style={{
-              color: S.accent, textDecoration: 'none', fontSize: 12, letterSpacing: 2,
-              textTransform: 'uppercase', fontWeight: 700, padding: '10px 14px',
-              border: `1px solid ${S.accent}`, borderRadius: 99,
-            }}>Itineraire →</a>
-            <a href="#" style={{
+          <div style={{ marginTop: 20 }}>
+            <a href={'tel:' + S.phone.replace(/\s/g, '')} style={{
               color: '#fff', textDecoration: 'none', fontSize: 12, letterSpacing: 2,
               textTransform: 'uppercase', fontWeight: 700, padding: '10px 14px',
               border: '1px solid rgba(255,255,255,.25)', borderRadius: 99,
+              display: 'inline-block',
             }}>{S.phone}</a>
           </div>
         </div>
@@ -601,27 +597,24 @@ function Infos({ shop, theme }) {
           ))}
         </div>
 
-        {/* Carte — masquée sur tablette (2 col) pour éviter orphelin, visible sur desktop et mobile */}
+        {/* Carte Google Maps — masquée sur tablette (2 col) pour éviter orphelin */}
         {!bp.isTablet && (
           <div>
             <div style={{ fontSize: 11, letterSpacing: 4, color: S.accent, fontWeight: 700, marginBottom: 14 }}>
               PLAN · 地図
             </div>
             <div style={{
-              height: bp.isMobile ? 160 : 200, background: S.bgDeep,
-              border: `1px solid ${S.accent}55`, position: 'relative', overflow: 'hidden',
+              height: bp.isMobile ? 180 : 220,
+              border: `1px solid ${S.accent}55`, overflow: 'hidden',
             }}>
-              <div style={{ position: 'absolute', inset: 0, color: S.accent, opacity: .2, ...HALFTONE_SMALL }} />
-              <div style={{
-                position: 'absolute', top: '50%', left: '50%',
-                transform: 'translate(-50%,-50%)',
-                width: 20, height: 20, borderRadius: 99, background: S.accent,
-                boxShadow: `0 0 0 8px ${S.accent}33, 0 0 0 16px ${S.accent}1a`,
-              }} />
-              <div style={{
-                position: 'absolute', bottom: 10, left: 10,
-                fontSize: 10, color: S.accent, letterSpacing: 2, fontFamily: 'ui-monospace, monospace',
-              }}>[carte · placeholder]</div>
+              <iframe
+                src={S.mapEmbed}
+                width="100%" height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
         )}
