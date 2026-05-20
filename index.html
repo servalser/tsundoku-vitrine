@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Tsundoku — Librairie manga</title>
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    height: 100%; overflow: hidden;
+    overflow-x: hidden;
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  #root { height: 100%; }
+  * { box-sizing: border-box; }
+  button { font-family: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- React 18 + ReactDOM (sans build, via CDN) -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<!-- Babel Standalone : compile le JSX dans le navigateur -->
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+<!-- Tokens de design -->
+<script type="text/babel" src="tsundoku/project/src/tokens.jsx?v=1"></script>
+
+<!-- Split-screen d'entree -->
+<script type="text/babel" src="tsundoku/project/src/split-a.jsx?v=1"></script>
+
+<!-- page-catalog expose RESA_LIMIT dont shop-sections a besoin -->
+<script type="text/babel" src="tsundoku/project/src/page-catalog.jsx?v=1"></script>
+
+<!-- Navbar + hero + sections page d'accueil -->
+<script type="text/babel" src="tsundoku/project/src/shop-nav.jsx?v=1"></script>
+<script type="text/babel" src="tsundoku/project/src/shop-sections.jsx?v=1"></script>
+
+<!-- Pages du site -->
+<script type="text/babel" src="tsundoku/project/src/page-manga.jsx?v=1"></script>
+<script type="text/babel" src="tsundoku/project/src/page-event.jsx?v=1"></script>
+<script type="text/babel" src="tsundoku/project/src/page-about.jsx?v=1"></script>
+<script type="text/babel" src="tsundoku/project/src/page-contact.jsx?v=1"></script>
+
+<script type="text/babel">
+
+/* ═══════════════════════════════════════════════════════════════
+   Site — version vitrine (pas d'auth, pas d'admin, pas de quizz)
+   ═══════════════════════════════════════════════════════════════ */
+function Site({ shop, onShopChange, theme, onThemeToggle }) {
+  const [view, setView]       = React.useState('choice');
+  const [mangaId, setMangaId] = React.useState('cs');
+
+  /* nav(vue, payload?) — change de page et remet le scroll a zero */
+  const nav = (v, payload) => {
+    if (v === 'manga' && payload) setMangaId(payload);
+    // Redirige les liens quizz/client vers la page d'accueil
+    if (v === 'quizz' || v === 'client') v = 'shop';
+    setView(v);
+    requestAnimationFrame(() => {
+      const el = document.querySelector('[data-page-scroll]');
+      if (el) el.scrollTop = 0;
+    });
+  };
+
+  /* Props communs a toutes les pages */
+  const pageProps = {
+    shop, theme,
+    connected: false,
+    client: null,
+    onConnect:      () => {},  // pas de connexion en mode vitrine
+    onBack:         () => nav('choice'),
+    onToggleTheme:  onThemeToggle,
+    onShopSwitch:   (s) => { onShopChange(s); },
+    onNav:          nav,
+  };
+
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+
+      {/* ── Split-screen de choix de boutique ── */}
+      {view === 'choice' && (
+        <div
+          style={{ width: '100%', height: '100%' }}
+          onClick={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const picked = (e.clientX - rect.left) / rect.width < 0.5
+              ? 'toulon' : 'marseille';
+            onShopChange(picked);
+            nav('shop');
+          }}
+        >
+          <SplitScreenA width="100%" height="100%" animIntensity={1} />
+        </div>
+      )}
+
+      {/* ── Pages interieures ── */}
+      {view !== 'choice' && (
+        <div
+          data-page-scroll
+          style={{ width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden' }}
+        >
+          {view === 'shop'    && <ShopHomepage    {...pageProps} intensity={1} />}
+          {view === 'catalog' && <CatalogPage     {...pageProps} onOpenManga={(id) => nav('manga', id)} />}
+          {view === 'manga'   && <MangaDetailPage {...pageProps} mangaId={mangaId} />}
+          {view === 'event'   && <EventPage       {...pageProps} />}
+          {view === 'about'   && <AboutPage       {...pageProps} />}
+          {view === 'contact' && <ContactPage     {...pageProps} />}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   App — niveau racine
+   ═══════════════════════════════════════════════════════════════ */
+function App() {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const [theme, setTheme] = React.useState(prefersDark ? 'dark' : 'light');
+  const [shop, setShop]   = React.useState('marseille');
+
+  return (
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <Site
+        shop={shop}
+        onShopChange={setShop}
+        theme={theme}
+        onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+      />
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Boot — attend que tous les composants soient charges
+   ═══════════════════════════════════════════════════════════════ */
+function boot() {
+  const ready =
+    window.useBreakpoint   &&
+    window.SplitScreenA    &&
+    window.ShopHomepage    &&
+    window.CatalogPage     &&
+    window.MangaDetailPage &&
+    window.EventPage       &&
+    window.AboutPage       &&
+    window.ContactPage;
+
+  if (!ready) return setTimeout(boot, 80);
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+}
+boot();
+</script>
+</body>
+</html>
