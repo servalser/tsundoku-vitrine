@@ -21,7 +21,7 @@ function Navbar({ shop, theme, connected, client, onConnect, onBack, onToggleThe
     if (bp.isDesktop) setMenuOpen(false);
   }, [bp.isDesktop]);
 
-  const pages = ['Accueil', 'Catalogue', 'Quizz', 'Compte', 'A propos', 'Contact'];
+  const pages = ['Accueil', 'Reservations', 'Quizz', 'A propos', 'Contact'];
 
   // Prénom affiché quand le client est connecté (avec un fallback)
   const prenomAffiche = client?.prenom || 'Mon compte';
@@ -29,9 +29,8 @@ function Navbar({ shop, theme, connected, client, onConnect, onBack, onToggleThe
   // Mapping nom de page → vue du routeur
   const pageTarget = (p) =>
     p === 'Accueil'       ? 'shop'
-    : p === 'Catalogue'     ? 'catalog'
+    : p === 'Reservations'  ? 'catalog'
     : p === 'Quizz'         ? 'quizz'
-    : p === 'Compte'        ? 'client'
     : p === 'A propos'      ? 'about'
     : p === 'Contact'       ? 'contact'
     : null;
@@ -156,7 +155,17 @@ function Navbar({ shop, theme, connected, client, onConnect, onBack, onToggleThe
             }}>{dark ? '☾' : '☀'}</button>
           )}
 
-          {/* Pas de bouton connexion en mode vitrine */}
+          {/* Bouton connexion — redirige vers page "en developpement" */}
+          {!bp.isMobile && (
+            <button onClick={onConnect} style={{
+              padding: '9px 16px', borderRadius: 99,
+              background: S.accent,
+              color: S.bgDeep,
+              border: 'none',
+              fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase',
+              cursor: 'pointer', fontFamily: FONTS.body,
+            }}>Se connecter</button>
+          )}
 
           {/* Bouton hamburger — mobile uniquement */}
           {bp.isMobile && (
@@ -283,7 +292,15 @@ function Navbar({ shop, theme, connected, client, onConnect, onBack, onToggleThe
                 cursor: 'pointer', fontSize: 18,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>{dark ? '☾' : '☀'}</button>
-              {/* Pas de bouton connexion en mode vitrine */}
+              <button onClick={() => { onConnect(); setMenuOpen(false); }} style={{
+                flex: 1, padding: '12px',
+                background: S.accent,
+                color: S.bgDeep,
+                border: 'none',
+                borderRadius: 8, fontSize: 12, fontWeight: 700,
+                letterSpacing: 1.5, textTransform: 'uppercase',
+                cursor: 'pointer', fontFamily: FONTS.body,
+              }}>Connexion</button>
             </div>
           </div>
         </div>
