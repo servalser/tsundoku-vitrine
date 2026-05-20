@@ -418,7 +418,7 @@ function Events({ shop, theme, onNav }) {
   );
 }
 
-// ── Avis clients ──────────────────────────────────────────────────────────────
+// ── Avis Google ──────────────────────────────────────────────────────────────
 function Reviews({ shop, theme }) {
   const S      = TSUNDOKU[shop];
   const dark   = theme === 'dark';
@@ -428,46 +428,122 @@ function Reviews({ shop, theme }) {
   const cardBg = dark ? '#14141c' : '#fff';
   const border = dark ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.08)';
 
-  const reviews = [
-    { name: 'Leo M.',      rating: 5, text: "La meilleure librairie manga du coin. L'equipe connait vraiment ses classiques.",  when: 'il y a 3j' },
-    { name: 'Claire B.',   rating: 5, text: "J'ai trouve une edition collector que je cherchais depuis 2 ans. Accueil genial.", when: 'il y a 1 sem.' },
-    { name: 'Raphael D.',  rating: 4, text: 'Rayon seinen impressionnant. Les quizz du mercredi valent le detour.',             when: 'il y a 2 sem.' },
-  ];
+  // Donnees reelles depuis tokens.jsx
+  const rating  = S.googleRating  || 4.8;
+  const nbAvis  = S.googleReviews || 0;
+  const url     = S.googleUrl     || '#';
 
-  // 1 col mobile → 2 col tablette → 3 col desktop
-  const cols = bp.isMobile ? '1fr' : bp.isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)';
+  // Etoiles pleines et demi-etoile
+  const fullStars = Math.floor(rating);
+  const hasHalf   = rating - fullStars >= 0.5;
+
+  const sectionPad = bp.isMobile ? '60px 20px' : bp.isTablet ? '70px 40px' : '90px 60px';
 
   return (
-    <Section label="4.9 / 5 · 342 avis" title="Ce que disent les clients." dark={dark} shop={shop} cta="Lire tous les avis">
-      <div style={{ display: 'grid', gridTemplateColumns: cols, gap: bp.isMobile ? 12 : 18 }}>
-        {reviews.map((r, i) => (
-          <div key={i} style={{
-            background: cardBg, border: `1px solid ${border}`, padding: bp.isMobile ? 20 : 26, position: 'relative',
+    <section style={{ padding: sectionPad, color: ink, position: 'relative' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto' }}>
+
+        {/* En-tete de section */}
+        <div style={{ marginBottom: bp.isMobile ? 28 : 40 }}>
+          <div style={{
+            fontSize: 11, letterSpacing: 4, color: S.accent,
+            textTransform: 'uppercase', fontWeight: 700, marginBottom: 10,
+            display: 'flex', alignItems: 'center', gap: 10,
           }}>
-            <div style={{
-              position: 'absolute', top: 16, right: 20,
-              fontFamily: FONTS.display, fontSize: bp.isMobile ? 48 : 72, color: S.accent, opacity: .3, lineHeight: 1,
-            }}>"</div>
-            <div style={{ color: S.accent, fontSize: 14, letterSpacing: 2 }}>
-              {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
-            </div>
-            <div style={{
-              fontFamily: FONTS.display, fontSize: bp.isMobile ? 15 : 18, lineHeight: 1.4, color: ink,
-              marginTop: 14, letterSpacing: -.2,
-            }}>
-              "{r.text}"
-            </div>
-            <div style={{
-              marginTop: 14, paddingTop: 12, borderTop: `1px solid ${border}`,
-              display: 'flex', justifyContent: 'space-between', fontSize: 12, color: muted,
-            }}>
-              <span style={{ fontWeight: 700, color: ink }}>{r.name}</span>
-              <span>{r.when}</span>
-            </div>
+            <span style={{ width: 24, height: 1, background: S.accent }} />
+            Avis Google · レビュー
           </div>
-        ))}
+          <h2 style={{
+            fontFamily: FONTS.display,
+            fontSize: bp.isMobile ? 36 : bp.isTablet ? 48 : 60,
+            lineHeight: .95, margin: 0, letterSpacing: -1,
+          }}>Ce qu'ils en pensent.</h2>
+        </div>
+
+        {/* Carte principale — note Google */}
+        <div style={{
+          background: cardBg, border: `1px solid ${border}`,
+          borderRadius: bp.isMobile ? 8 : 0,
+          padding: bp.isMobile ? '36px 24px' : '52px 60px',
+          position: 'relative', overflow: 'hidden',
+          display: 'flex',
+          flexDirection: bp.isMobile ? 'column' : 'row',
+          alignItems: 'center',
+          gap: bp.isMobile ? 28 : 60,
+        }}>
+          {/* Motif halftone */}
+          <div style={{
+            position: 'absolute', inset: 0, color: S.accent, opacity: .06,
+            ...HALFTONE_MED, pointerEvents: 'none',
+          }} />
+
+          {/* Kanji decoratif */}
+          {!bp.isMobile && (
+            <div style={{
+              position: 'absolute', right: -20, top: -30,
+              fontFamily: FONTS.jpDisplay, fontWeight: 900, fontSize: 280,
+              color: S.accent, opacity: .08, lineHeight: 1, pointerEvents: 'none',
+            }}>声</div>
+          )}
+
+          {/* Bloc note */}
+          <div style={{ position: 'relative', textAlign: 'center', flexShrink: 0 }}>
+            {/* Grande note */}
+            <div style={{
+              fontFamily: FONTS.display, fontWeight: 900,
+              fontSize: bp.isMobile ? 80 : 120, lineHeight: .85,
+              color: S.accent,
+              textShadow: `3px 3px 0 ${dark ? 'rgba(0,0,0,.4)' : 'rgba(0,0,0,.1)'}`,
+            }}>{rating}</div>
+
+            {/* Etoiles */}
+            <div style={{
+              marginTop: 10, fontSize: bp.isMobile ? 20 : 26,
+              color: S.accent, letterSpacing: 4,
+            }}>
+              {'★'.repeat(fullStars)}{hasHalf ? '★' : ''}{'☆'.repeat(5 - fullStars - (hasHalf ? 1 : 0))}
+            </div>
+
+            {/* Nombre d'avis */}
+            <div style={{
+              marginTop: 8, fontSize: 13, color: muted, letterSpacing: 1,
+            }}>{nbAvis} avis sur Google</div>
+          </div>
+
+          {/* Bloc texte + CTA */}
+          <div style={{ position: 'relative', flex: 1 }}>
+            <div style={{
+              fontFamily: FONTS.display,
+              fontSize: bp.isMobile ? 22 : 32,
+              lineHeight: 1.1, letterSpacing: -.5, color: ink,
+              marginBottom: 16,
+            }}>
+              Les clients parlent<br />
+              <span style={{ color: S.accent }}>mieux que nous.</span>
+            </div>
+            <div style={{
+              fontSize: bp.isMobile ? 14 : 16, lineHeight: 1.6, color: muted,
+              maxWidth: 420, marginBottom: 28,
+            }}>
+              {nbAvis} personnes ont laisse un avis sur Google.
+              Allez les lire, on n'a rien a cacher.
+            </div>
+
+            {/* Bouton vers Google Maps */}
+            <a href={url} target="_blank" rel="noopener noreferrer" style={{
+              display: 'inline-block',
+              background: S.accent, color: S.bgDeep, border: 'none',
+              padding: bp.isMobile ? '14px 22px' : '16px 28px',
+              fontWeight: 700, fontSize: bp.isMobile ? 12 : 14,
+              letterSpacing: 3, textTransform: 'uppercase',
+              borderRadius: 99, cursor: 'pointer', fontFamily: FONTS.body,
+              textDecoration: 'none',
+              boxShadow: `0 0 0 4px ${S.accent}44`,
+            }}>Lire les avis sur Google →</a>
+          </div>
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }
 

@@ -18,6 +18,9 @@ const TSUNDOKU = {
       ['Mardi – Samedi', '10h – 19h'],
       ['Dimanche', 'Ferme'],
     ],
+    googleRating: 4.9,
+    googleReviews: 126,
+    googleUrl: 'https://www.google.com/maps/place/Librairie+Tsundoku+Toulon/',
   },
   marseille: {
     name: 'MARSEILLE',
@@ -35,6 +38,9 @@ const TSUNDOKU = {
       ['Mardi – Samedi', '10h – 19h'],
       ['Dimanche', 'Ferme'],
     ],
+    googleRating: 4.8,
+    googleReviews: 415,
+    googleUrl: 'https://www.google.com/maps/place/Tsundoku/',
   },
 };
 
